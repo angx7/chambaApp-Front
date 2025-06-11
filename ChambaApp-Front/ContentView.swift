@@ -7,17 +7,37 @@
 
 import SwiftUI
 
+enum AppScreen {
+    case login
+    case register
+    case servicios
+}
+
 struct ContentView: View {
+    @State private var currentScreen: AppScreen = .login
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            switch currentScreen {
+            case .login:
+                LoginView(onLoginSuccess: {
+                    currentScreen = .servicios
+                }, onRegisterTap: {
+                    currentScreen = .register
+                })
+            case .register:
+                RegisterView(onRegisterSuccess: {
+                    currentScreen = .servicios
+                }, onBackToLogin: {
+                    currentScreen = .login
+                })
+            case .servicios:
+                ServiciosView()
+            }
         }
-        .padding()
     }
 }
+
 
 #Preview {
     ContentView()

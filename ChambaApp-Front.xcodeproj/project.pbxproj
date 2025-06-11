@@ -10,9 +10,22 @@
 		3B43E72B2DF3B429002079A3 /* ChambaApp-Front.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChambaApp-Front.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4892BF712DF8F59D00D3142C /* Exceptions for "ChambaApp-Front" folder in "ChambaApp-Front" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3B43E72A2DF3B429002079A3 /* ChambaApp-Front */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3B43E72D2DF3B429002079A3 /* ChambaApp-Front */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				4892BF712DF8F59D00D3142C /* Exceptions for "ChambaApp-Front" folder in "ChambaApp-Front" target */,
+			);
 			path = "ChambaApp-Front";
 			sourceTree = "<group>";
 		};
@@ -255,6 +268,11 @@
 				DEVELOPMENT_TEAM = 6634N94RP8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ChambaApp-Front/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Necesitamos usar la cámara para escanear tu INE\"";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "\"Necesitamos acceso a tus fotos para registrar tu INE\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -284,6 +302,11 @@
 				DEVELOPMENT_TEAM = 6634N94RP8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ChambaApp-Front/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_NSCameraUsageDescription = "\"Necesitamos usar la cámara para escanear tu INE\"";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "\"Necesitamos acceso a tus fotos para registrar tu INE\"";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
