@@ -32,12 +32,13 @@ struct ContentView: View {
                     currentScreen = .login
                 })
             case .servicios:
-                ServiciosView()
+                ServiciosView(onLogout: {
+                    currentScreen = .login
+                })
             }
         }
     }
 }
-
 
 #Preview {
     ContentView()

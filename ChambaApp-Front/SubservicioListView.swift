@@ -28,10 +28,10 @@ struct SubservicioListView: View {
                                 // Título del subservicio
                                 Text(item.nombre)
                                     .font(.headline)
-                                    .foregroundColor(Color("TextoPrincipal"))
+                                    .foregroundColor(.black)
                                     .padding(.horizontal, 20)
                                     .padding(.vertical, 10)
-                                    .background(Color("Acento"))
+                                    .background(Color.white)
                                     .cornerRadius(12)
 
                                 // Imagen

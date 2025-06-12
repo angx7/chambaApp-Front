@@ -55,15 +55,14 @@ struct DetallePrestadorView: View {
                     .bold()
                     .foregroundColor(Color("TextoPrincipal"))
 
-                Spacer()
-
+                
                 Button("Contacto") {
                     // Acción futura: enviar mensaje, abrir chat, etc.
                 }
-                .padding()
+                .padding(20)
                 .frame(maxWidth: 200)
                 .background(Color("BotonPrimario"))
-                .foregroundColor(Color("TextoPrincipal"))
+                .foregroundColor(.black)
                 .cornerRadius(12)
             }
             .padding(.top, 40)
@@ -81,6 +80,6 @@ struct DetallePrestadorView: View {
         descripcion: "Especialista en cuidado infantil",
         imagenURL: URL(string: "https://cdn-icons-png.flaticon.com/512/236/236832.png")!
     )
-    
+
     return DetallePrestadorView(prestador: ejemplo)
 }
