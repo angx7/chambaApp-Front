@@ -14,25 +14,25 @@ struct RegisterView: View {
     @State private var name = ""
     @State private var address = ""
     @State private var birthdate = ""
-    
+
     @State private var showImagePicker = false
     @State private var imageSource: UIImagePickerController.SourceType = .photoLibrary
     @State private var selectedUIImage: UIImage? = nil
 
     var body: some View {
         ZStack {
-            Color(red: 26/255, green: 62/255, blue: 66/255).ignoresSafeArea()
+            Color("FondoPrincipal").ignoresSafeArea()
 
             ScrollView {
                 VStack(spacing: 24) {
                     Text("REGISTRO")
                         .font(.largeTitle)
-                        .foregroundColor(.white)
+                        .foregroundColor(Color("TextoPrincipal"))
                         .padding(.top, 40)
 
                     ZStack {
                         Rectangle()
-                            .fill(Color.gray.opacity(0.3))
+                            .fill(Color("FondoTarjeta"))
                             .frame(height: 140)
                             .cornerRadius(8)
 
@@ -44,7 +44,7 @@ struct RegisterView: View {
                                 .cornerRadius(8)
                         } else {
                             Text("INE")
-                                .foregroundColor(.black)
+                                .foregroundColor(Color("TextoPrincipal"))
                                 .font(.title2)
                         }
                     }
@@ -60,11 +60,11 @@ struct RegisterView: View {
                             showImagePicker = true
                         }
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("TextoPrincipal"))
 
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Registro manual")
-                            .foregroundColor(.white)
+                            .foregroundColor(Color("TextoPrincipal"))
 
                         Group {
                             TextField("Nombre", text: $name)
@@ -72,26 +72,26 @@ struct RegisterView: View {
                             TextField("Fecha de nacimiento", text: $birthdate)
                         }
                         .padding()
-                        .background(Color(red: 206/255, green: 237/255, blue: 241/255))
+                        .background(Color("FondoTarjeta"))
+                        .foregroundColor(Color("TextoPrincipal"))
                         .cornerRadius(5)
                     }
                     .padding(.horizontal, 30)
 
                     Button("Registrarme") {
-                        // Aquí podrías guardar info, luego:
                         onRegisterSuccess()
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("TextoPrincipal"))
                     .font(.headline)
                     .padding()
                     .frame(maxWidth: 200)
-                    .background(Color(red: 114/255, green: 153/255, blue: 156/255))
+                    .background(Color("BotonPrimario"))
                     .cornerRadius(8)
 
                     Button("¿Ya tienes cuenta? Inicia sesión") {
                         onBackToLogin()
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("TextoPrincipal"))
                     .font(.footnote)
                     .padding(.top, 10)
 

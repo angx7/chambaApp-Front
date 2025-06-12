@@ -19,6 +19,7 @@ struct ServiciosView: View {
                 Text("SERVICIOS")
                     .font(.largeTitle)
                     .bold()
+                    .foregroundColor(Color("TextoPrincipal"))
                     .padding(.top, 60)
 
                 // Secciones de servicios con navegación
@@ -58,7 +59,7 @@ struct ServiciosView: View {
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity, alignment: .center)
         }
-        .background(Color(red: 206/255, green: 237/255, blue: 241/255))
+        .background(Color("FondoPrincipal"))
         .ignoresSafeArea()
     }
 }
@@ -75,22 +76,22 @@ struct ServicioItem: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 60, height: 60)
-                .foregroundColor(.black)
+                .foregroundColor(Color("TextoPrincipal"))
 
             // Título
             Text(title)
                 .font(.title2)
                 .bold()
-                .foregroundColor(.black)
+                .foregroundColor(Color("TextoPrincipal"))
 
             // Descripción
             Text(description)
                 .font(.body)
-                .foregroundColor(.black)
+                .foregroundColor(Color("TextoPrincipal"))
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
-                .background(Color(red: 114/255, green: 153/255, blue: 156/255).opacity(0.3))
+                .background(Color("FondoTarjeta"))
                 .cornerRadius(8)
         }
         .frame(maxWidth: .infinity, alignment: .center)

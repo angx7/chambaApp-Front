@@ -1,9 +1,3 @@
-//
-//  SubservicioListView.swift
-//  ChambaApp-Front
-//
-//  Created by Grecia Navarrete on 10/06/25.
-//
 
 
 
@@ -17,52 +11,58 @@ struct SubservicioListView: View {
 
     var body: some View {
         ZStack {
-            // Fondo azul claro en toda la pantalla
-            Color(red: 206/255, green: 237/255, blue: 241/255)
+            Color("FondoPrincipal")
                 .ignoresSafeArea()
 
             ScrollView {
-                VStack(spacing: 30) {
+                VStack(spacing: 40) {
                     Text(titulo.uppercased())
                         .font(.largeTitle)
                         .bold()
-                        .padding(.top, 40)
+                        .foregroundColor(Color("TextoPrincipal"))
+                        .padding(.top, 50)
 
                     ForEach(subservicios) { item in
-                        VStack(spacing: 8) {
-                            Text(item.nombre)
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 16)
-                                .padding(.vertical, 6)
-                                .background(Color(red: 26/255, green: 62/255, blue: 66/255))
-                                .cornerRadius(12)
+                        NavigationLink(destination: PrestadoresListView(titulo: item.nombre)) {
+                            VStack(spacing: 12) {
+                                // Título del subservicio
+                                Text(item.nombre)
+                                    .font(.headline)
+                                    .foregroundColor(Color("TextoPrincipal"))
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 10)
+                                    .background(Color("Acento"))
+                                    .cornerRadius(12)
 
-                            AsyncImage(url: item.imagenURL) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                case .success(let image):
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 200, height: 150)
-                                        .cornerRadius(8)
-                                case .failure:
-                                    Image(systemName: "photo")
-                                        .resizable()
-                                        .frame(width: 100, height: 100)
-                                        .foregroundColor(.gray)
-                                @unknown default:
-                                    EmptyView()
+                                // Imagen
+                                AsyncImage(url: item.imagenURL) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxWidth: 250, maxHeight: 160)
+                                            .cornerRadius(12)
+                                    case .failure:
+                                        Image(systemName: "photo")
+                                            .resizable()
+                                            .frame(width: 100, height: 100)
+                                            .foregroundColor(.gray)
+                                    @unknown default:
+                                        EmptyView()
+                                    }
                                 }
                             }
+                            .frame(maxWidth: .infinity)
+                            .padding(.horizontal, 24)
                         }
                     }
 
-                    Spacer(minLength: 40)
+                    Spacer(minLength: 50)
                 }
-                .padding(.horizontal, 24)
+                .frame(maxWidth: .infinity)
             }
         }
         .onAppear {
@@ -78,6 +78,16 @@ struct SubservicioListView: View {
                     id: UUID(),
                     nombre: "Cuidado de niños",
                     imagenURL: URL(string: "https://cdn.pixabay.com/photo/2017/01/06/19/15/kids-1959827_960_720.jpg")!
+                ),
+                Subservicio(
+                    id: UUID(),
+                    nombre: "Limpieza",
+                    imagenURL: URL(string: "https://cdn.pixabay.com/photo/2016/03/26/13/09/cleaning-1280580_960_720.jpg")!
+                ),
+                Subservicio(
+                    id: UUID(),
+                    nombre: "Jardinería",
+                    imagenURL: URL(string: "https://cdn.pixabay.com/photo/2017/02/01/22/02/gardening-2036450_960_720.jpg")!
                 )
             ]
         case "Empresarial":
