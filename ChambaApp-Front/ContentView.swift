@@ -10,36 +10,37 @@ import SwiftUI
 enum AppScreen {
     case login
     case register
-    case servicios
 }
 
 struct ContentView: View {
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     @State private var currentScreen: AppScreen = .login
 
     var body: some View {
         NavigationView {
-            switch currentScreen {
-            case .login:
-                LoginView(onLoginSuccess: {
-                    currentScreen = .servicios
-                }, onRegisterTap: {
-                    currentScreen = .register
-                })
-            case .register:
-                RegisterView(onRegisterSuccess: {
-                    currentScreen = .servicios
-                }, onBackToLogin: {
-                    currentScreen = .login
-                })
-            case .servicios:
+            if isLoggedIn {
                 ServiciosView(onLogout: {
-                    currentScreen = .login
+                    isLoggedIn = false
                 })
+            } else {
+                switch currentScreen {
+                case .login:
+                    LoginView(onLoginSuccess: {
+                        isLoggedIn = true
+                    }, onRegisterTap: {
+                        currentScreen = .register
+                    })
+                case .register:
+                    RegisterView(onRegisterSuccess: {
+                        isLoggedIn = true
+                    }, onBackToLogin: {
+                        currentScreen = .login
+                    })
+                }
             }
         }
     }
 }
-
 #Preview {
     ContentView()
 }

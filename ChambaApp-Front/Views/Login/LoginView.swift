@@ -4,6 +4,7 @@
 //
 //  Created by Grecia Navarrete on 10/06/25.
 //
+
 import SwiftUI
 
 struct LoginView: View {
@@ -20,6 +21,10 @@ struct LoginView: View {
     @State private var usernameInvalid = false
     @State private var passwordInvalid = false
     @State private var errorMessage = ""
+
+    // NUEVO: Persistencia con AppStorage
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+    @AppStorage("loggedUsername") private var loggedUsername: String = ""
 
     func login() {
         usernameEmpty = username.trimmingCharacters(in: .whitespaces).isEmpty
@@ -40,6 +45,9 @@ struct LoginView: View {
                 isLoading = false
 
                 if success {
+                    // GUARDAR EN STORAGE
+                    isLoggedIn = true
+                    loggedUsername = username
                     onLoginSuccess()
                 } else {
                     if reason == "Usuario no encontrado" {

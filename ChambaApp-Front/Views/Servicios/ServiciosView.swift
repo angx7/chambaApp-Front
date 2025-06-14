@@ -4,15 +4,15 @@
 //
 //  Created by Grecia Navarrete on 10/06/25.
 //
-
-
-
-
-
 import SwiftUI
 
 struct ServiciosView: View {
-    var onLogout: () -> Void  // Usamos callback para cerrar sesión
+    var onLogout: () -> Void  // Callback para cerrar sesión
+
+    @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
+    @AppStorage("loggedUsername") private var loggedUsername: String = ""
+
+    @State private var showLogoutAlert = false
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -20,14 +20,11 @@ struct ServiciosView: View {
 
             ScrollView {
                 VStack(spacing: 50) {
-                    // Título con buena separación superior
                     Text("SERVICIOS")
                         .font(.largeTitle)
                         .bold()
                         .foregroundColor(Color("TextoPrincipal"))
                         .padding(.top, 60)
-
-                    // Secciones de servicios con navegación
 
                     NavigationLink(destination: SubservicioListView(titulo: "Doméstico")) {
                         ServicioItem(
@@ -65,17 +62,27 @@ struct ServiciosView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
 
-            // Botón de logout en la parte superior derecha
+            // Botón de logout con alerta
             Button("Logout") {
-                onLogout()
+                showLogoutAlert = true
             }
             .font(.footnote)
             .padding(.top, 16)
             .padding(.trailing, 20)
             .foregroundColor(Color("TextoPrincipal"))
+            .alert("¿Seguro que deseas cerrar sesión?", isPresented: $showLogoutAlert) {
+                Button("Cancelar", role: .cancel) { }
+
+                Button("Cerrar sesión", role: .destructive) {
+                    isLoggedIn = false
+                    loggedUsername = ""
+                    onLogout()
+                }
+            }
         }
     }
 }
+
 
 struct ServicioItem: View {
     var icon: String
@@ -83,30 +90,39 @@ struct ServicioItem: View {
     var description: String
 
     var body: some View {
-        VStack(spacing: 16) {
-            // Ícono
-            Image(systemName: icon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 60, height: 60)
-                .foregroundColor(Color("TextoPrincipal"))
+        HStack(alignment: .center, spacing: 16) {
+            // Ícono circular
+            ZStack {
+                Circle()
+                    .stroke(Color("TextoPrincipal"), lineWidth: 2)
+                    .frame(width: 70, height: 70)
 
-            // Título
-            Text(title)
-                .font(.title2)
-                .bold()
-                .foregroundColor(Color("TextoPrincipal"))
+                Image(systemName: icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 35, height: 35)
+                    .foregroundColor(Color("TextoPrincipal"))
+            }
 
-            // Descripción
-            Text(description)
-                .font(.body)
-                .foregroundColor(Color("TextoPrincipal"))
-                .multilineTextAlignment(.leading)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-                .background(Color("FondoTarjeta"))
-                .cornerRadius(8)
+            // Texto alineado a la izquierda
+            VStack(alignment: .leading, spacing: 8) {
+                Text(title)
+                    .font(.headline)
+                    .bold()
+                    .foregroundColor(Color("TextoPrincipal"))
+
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(Color("TextoPrincipal"))
+                    .multilineTextAlignment(.leading)
+                    
+                
+            }
+            Spacer()
         }
-        .frame(maxWidth: .infinity, alignment: .center)
+        .padding()
+        .background(Color("FondoTarjeta"))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
     }
 }
