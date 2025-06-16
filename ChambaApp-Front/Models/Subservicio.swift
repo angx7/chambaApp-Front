@@ -12,6 +12,7 @@ import Foundation
 struct Subservicio: Identifiable, Codable {
     let id: UUID
     let nombre: String
+    let descripcion: String
     let imagenURL: URL
 }
 
