@@ -21,6 +21,7 @@ struct ContentView: View {
             if isLoggedIn {
                 ServiciosView(onLogout: {
                     isLoggedIn = false
+                    currentScreen = .login 
                 })
             } else {
                 switch currentScreen {
@@ -40,7 +41,4 @@ struct ContentView: View {
             }
         }
     }
-}
-#Preview {
-    ContentView()
 }

@@ -10,9 +10,9 @@ struct ServiciosView: View {
     var onLogout: () -> Void  // Callback para cerrar sesión
 
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
-    @AppStorage("loggedUsername") private var loggedUsername: String = ""
-
+    @AppStorage("loggedUserId") private var loggedUserId: String = ""
     @State private var showLogoutAlert = false
+    @State private var navegarAConfiguracion = false
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -26,7 +26,7 @@ struct ServiciosView: View {
                         .foregroundColor(Color("TextoPrincipal"))
                         .padding(.top, 60)
 
-                    NavigationLink(destination: SubservicioListView(titulo: "Doméstico")) {
+                    NavigationLink(destination: SubservicioListView(titulo: "Domestico")) {
                         ServicioItem(
                             icon: "house.fill",
                             title: "Doméstico",
@@ -62,67 +62,44 @@ struct ServiciosView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
 
-            // Botón de logout con alerta
-            Button("Logout") {
-                showLogoutAlert = true
+            Menu {
+                Button("Configuración") {
+                    navegarAConfiguracion = true
+                }
+
+                Button("Cerrar sesión", role: .destructive) {
+                    showLogoutAlert = true
+                }
+            } label: {
+                Image(systemName: "gearshape")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 26, height: 26)
+                    .padding(.top, 16)
+                    .padding(.trailing, 20)
+                    .foregroundColor(Color("TextoPrincipal"))
             }
-            .font(.footnote)
-            .padding(.top, 16)
-            .padding(.trailing, 20)
-            .foregroundColor(Color("TextoPrincipal"))
+
             .alert("¿Seguro que deseas cerrar sesión?", isPresented: $showLogoutAlert) {
                 Button("Cancelar", role: .cancel) { }
 
                 Button("Cerrar sesión", role: .destructive) {
                     isLoggedIn = false
-                    loggedUsername = ""
+                    loggedUserId = ""
                     onLogout()
                 }
             }
+
+            // NavigationLink invisible para ir a ConfiguracionView
+            NavigationLink(destination: ConfiguracionView(onLogout: {
+                isLoggedIn = false
+                loggedUserId = ""
+                onLogout()
+            }), isActive: $navegarAConfiguracion) {
+                EmptyView()
+            }
+
         }
     }
 }
 
-
-struct ServicioItem: View {
-    var icon: String
-    var title: String
-    var description: String
-
-    var body: some View {
-        HStack(alignment: .center, spacing: 16) {
-            // Ícono circular
-            ZStack {
-                Circle()
-                    .stroke(Color("TextoPrincipal"), lineWidth: 2)
-                    .frame(width: 70, height: 70)
-
-                Image(systemName: icon)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 35, height: 35)
-                    .foregroundColor(Color("TextoPrincipal"))
-            }
-
-            // Texto alineado a la izquierda
-            VStack(alignment: .leading, spacing: 8) {
-                Text(title)
-                    .font(.headline)
-                    .bold()
-                    .foregroundColor(Color("TextoPrincipal"))
-
-                Text(description)
-                    .font(.caption)
-                    .foregroundColor(Color("TextoPrincipal"))
-                    .multilineTextAlignment(.leading)
-                    
-                
-            }
-            Spacer()
-        }
-        .padding()
-        .background(Color("FondoTarjeta"))
-        .cornerRadius(12)
-        .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
-    }
-}

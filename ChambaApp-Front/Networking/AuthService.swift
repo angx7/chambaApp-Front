@@ -13,11 +13,16 @@ struct LoginErrorResponse: Decodable {
     let reason: String
 }
 
+struct LoginSuccessResponse: Decodable {
+    let status: String
+    let id: String
+}
+
 class AuthService {
     static let shared = AuthService()
 
     func login(username: String, password: String, completion: @escaping (Bool, String?) -> Void) {
-        guard let url = URL(string: "https://7a65-2a09-bac5-4a13-63c-00-9f-2b.ngrok-free.app/login") else {
+        guard let url = URL(string: "\(Constants.baseURL)/login") else {
             completion(false, "URL inválida")
             return
         }
@@ -40,9 +45,10 @@ class AuthService {
                 return
             }
 
-            // Caso éxito: backend responde con {"status": "ok"}
-            if let json = try? JSONDecoder().decode([String: String].self, from: data),
-               json["status"] == "ok" {
+            // Caso éxito: backend responde con {"id": "...", "status": "ok"}
+            if let json = try? JSONDecoder().decode(LoginSuccessResponse.self, from: data),
+               json.status == "ok" {
+                UserDefaults.standard.set(json.id, forKey: "loggedUserId")
                 completion(true, nil)
 
             // Caso error: backend responde con {"error": true, "reason": "..."}
@@ -56,4 +62,53 @@ class AuthService {
             }
         }.resume()
     }
+    
+    // Nueva estructura de respuesta del registro
+    struct RegistroResponse: Decodable {
+        let status: String
+        let id: String
+    }
+
+    func register(usuario: [String: String], completion: @escaping (Bool, String?) -> Void) {
+        guard let url = URL(string: "\(Constants.baseURL)/usuarios") else {
+            completion(false, "URL inválida")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? JSONEncoder().encode(usuario)
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(false, "Error de red: \(error.localizedDescription)")
+                return
+            }
+
+            guard let data = data else {
+                completion(false, "No se recibió respuesta")
+                return
+            }
+
+            // ✅ Decodificamos la respuesta esperada del backend
+            if let json = try? JSONDecoder().decode(RegistroResponse.self, from: data),
+               json.status == "ok" {
+                // Guardamos el ID en AppStorage o UserDefaults
+                UserDefaults.standard.set(json.id, forKey: "loggedUserId")
+                completion(true, nil)
+
+            } else if let errorJson = try? JSONDecoder().decode([String: String].self, from: data),
+                      let msg = errorJson["reason"] {
+                completion(false, msg)
+
+            } else {
+                let raw = String(data: data, encoding: .utf8) ?? "Respuesta no válida"
+                completion(false, "Error desconocido: \(raw)")
+            }
+        }.resume()
+    }
+
+
+
 }

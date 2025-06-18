@@ -4,7 +4,6 @@
 //
 //  Created by Grecia Navarrete on 11/06/25.
 //
-
 import SwiftUI
 
 struct DetallePrestadorView: View {
@@ -14,72 +13,108 @@ struct DetallePrestadorView: View {
         ZStack {
             Color("FondoPrincipal").ignoresSafeArea()
 
-            VStack(spacing: 30) {
-                AsyncImage(url: prestador.imagenURL) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 120, height: 120)
-                            .clipShape(Circle())
-                    case .failure:
-                        Image(systemName: "person.crop.circle.badge.exclamationmark")
-                            .resizable()
-                            .frame(width: 120, height: 120)
-                    @unknown default:
-                        EmptyView()
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 20) {
+                        // Imagen de perfil
+                        AsyncImage(url: URL(string: prestador.imagenURL)) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .frame(width: 120, height: 120)
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(Circle())
+                                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                            case .failure:
+                                Image(systemName: "person.crop.circle.badge.exclamationmark")
+                                    .resizable()
+                                    .frame(width: 120, height: 120)
+                            @unknown default:
+                                EmptyView()
+                            }
+                        }
+                        .padding(.top, 40)
+
+                        // Nombre, edad y descripción
+                        Text(prestador.nombre)
+                            .font(.title)
+                            .bold()
+                            .foregroundColor(Color("TextoPrincipal"))
+
+                        Text("\(prestador.edad) años")
+                            .font(.subheadline)
+                            .foregroundColor(Color("TextoPrincipal"))
+
+                        Text(prestador.descripcion)
+                            .font(.body)
+                            .foregroundColor(Color("TextoPrincipal"))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+
+                        // Calificación general con estrellas
+                        HStack(spacing: 4) {
+                            ForEach(0..<5) { i in
+                                Image(systemName: i < Int(round(prestador.calificacion ?? 0)) ? "star.fill" : "star")
+                                    .foregroundColor(.yellow)
+                            }
+                            Text(String(format: "(%.2f)", prestador.calificacion ?? 0))
+                                .font(.subheadline)
+                                .foregroundColor(Color("TextoPrincipal"))
+                        }
+
+                        Divider().padding(.vertical, 10)
+
+                        // Sobre mí
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Sobre mí")
+                                .font(.headline)
+                                .foregroundColor(Color("TextoPrincipal"))
+
+                            Text("Hola, soy \(prestador.nombre). Tengo \(prestador.experiencia.lowercased() ?? "0 años") de experiencia en el área \"\(prestador.subservicio.lowercased() ?? "")\". Me encanta ayudar a las personas y brindar un servicio de calidad.")
+                                .font(.body)
+                                .foregroundColor(Color("TextoPrincipal"))
+                                .multilineTextAlignment(.leading)
+                        }
+                        .padding(.horizontal)
+
+                        // Reseñas
+                        if !(prestador.reseñas.isEmpty ?? false) {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text("Reseñas")
+                                    .font(.headline)
+                                    .foregroundColor(Color("TextoPrincipal"))
+
+                                ForEach(prestador.reseñas ?? []) { reseña in
+                                    ReseñaView(reseña: reseña)
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 30) // Espacio para que no se esconda tras el botón
+                        }
                     }
                 }
 
-                Text("Reseñas")
-                    .font(.title2)
-                    .bold()
-                    .foregroundColor(Color("TextoPrincipal"))
-
-                Text("Lorem ipsum dolor sit amet consectetur. Hac maecenas tellus aliquet sit odio eu sagittis imperdiet cum. Varius nec amet pellentesque purus malesuada sagittis eget amet senectus.")
-                    .font(.body)
-                    .foregroundColor(Color("TextoPrincipal"))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-
-                Text("Calificación")
-                    .font(.title3)
-                    .foregroundColor(Color("TextoPrincipal"))
-                    .padding(.top)
-
-                Text("6/10")
-                    .font(.title2)
-                    .bold()
-                    .foregroundColor(Color("TextoPrincipal"))
-
-                
-                Button("Contacto") {
-                    // Acción futura: enviar mensaje, abrir chat, etc.
+                // Botón fijo abajo
+                Button(action: {
+                    // Acción: abrir chat, llamar, etc.
+                }) {
+                    Text("Contactar a \(prestador.nombre.components(separatedBy: " ").first ?? "prestador")")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color("BotonPrimario"))
+                        .cornerRadius(12)
+                        .padding(.horizontal, 20)
                 }
-                .padding(20)
-                .frame(maxWidth: 200)
-                .background(Color("BotonPrimario"))
-                .foregroundColor(.black)
-                .cornerRadius(12)
+                .padding(.bottom, 20)
+                .background(Color("FondoPrincipal").ignoresSafeArea(edges: .bottom))
             }
-            .padding(.top, 40)
         }
     }
-}
 
-// MARK: - Ejemplo estático para previsualizar como si viniera del backend
-
-#Preview {
-    let ejemplo = Prestador(
-        id: UUID(),
-        nombre: "Laura González",
-        edad: 27,
-        descripcion: "Especialista en cuidado infantil",
-        imagenURL: URL(string: "https://cdn-icons-png.flaticon.com/512/236/236832.png")!
-    )
-
-    return DetallePrestadorView(prestador: ejemplo)
 }

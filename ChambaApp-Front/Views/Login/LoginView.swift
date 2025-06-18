@@ -21,8 +21,9 @@ struct LoginView: View {
     @State private var usernameInvalid = false
     @State private var passwordInvalid = false
     @State private var errorMessage = ""
+    @State private var navegarARecuperar = false
 
-    // NUEVO: Persistencia con AppStorage
+    // Persistencia con AppStorage
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
     @AppStorage("loggedUsername") private var loggedUsername: String = ""
 
@@ -62,108 +63,117 @@ struct LoginView: View {
     }
 
     var body: some View {
-        ZStack {
-            Color("FondoPrincipal").ignoresSafeArea()
+        NavigationStack {
+            ZStack {
+                Color("FondoPrincipal").ignoresSafeArea()
 
-            VStack(spacing: 24) {
-                Image(systemName: "person.crop.circle.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(Color("TextoPrincipal"))
-                    .padding(.top, 50)
-
-                // Username Field
-                HStack {
-                    Image(systemName: "person")
+                VStack(spacing: 24) {
+                    Image(systemName: "person.crop.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
                         .foregroundColor(Color("TextoPrincipal"))
+                        .padding(.top, 50)
 
-                    TextField("username", text: $username)
-                        .foregroundColor(Color("TextoPrincipal"))
-                        .autocapitalization(.none)
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 10)
-                .background(RoundedRectangle(cornerRadius: 12).fill(Color("FondoTarjeta")))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .strokeBorder((usernameEmpty || usernameInvalid) ? Color.red : Color.clear, lineWidth: 1.5)
-                )
-                .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
-                .padding(.horizontal, 30)
-
-                // Password Field
-                HStack {
-                    Image(systemName: "lock")
-                        .foregroundColor(Color("TextoPrincipal"))
-
-                    if showPassword {
-                        TextField("password", text: $password)
+                    // Username Field
+                    HStack {
+                        Image(systemName: "person")
                             .foregroundColor(Color("TextoPrincipal"))
-                            .id("TextPassword")
-                    } else {
-                        SecureField("password", text: $password)
+
+                        TextField("username", text: $username)
                             .foregroundColor(Color("TextoPrincipal"))
-                            .id("SecurePassword")
+                            .autocapitalization(.none)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color("FondoTarjeta")))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder((usernameEmpty || usernameInvalid) ? Color.red : Color.clear, lineWidth: 1.5)
+                    )
+                    .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
+                    .padding(.horizontal, 30)
+
+                    // Password Field
+                    HStack {
+                        Image(systemName: "lock")
+                            .foregroundColor(Color("TextoPrincipal"))
+
+                        if showPassword {
+                            TextField("password", text: $password)
+                                .foregroundColor(Color("TextoPrincipal"))
+                                .id("TextPassword")
+                        } else {
+                            SecureField("password", text: $password)
+                                .foregroundColor(Color("TextoPrincipal"))
+                                .id("SecurePassword")
+                        }
+
+                        Button(action: {
+                            showPassword.toggle()
+                        }) {
+                            Image(systemName: showPassword ? "eye.slash.fill" : "eye.fill")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 10)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color("FondoTarjeta")))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder((passwordEmpty || passwordInvalid) ? Color.red : Color.clear, lineWidth: 1.5)
+                    )
+                    .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
+                    .padding(.horizontal, 30)
+
+                    // Error message
+                    if !errorMessage.isEmpty {
+                        Text(errorMessage)
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .padding(.top, -10)
                     }
 
-                    Button(action: {
-                        showPassword.toggle()
-                    }) {
-                        Image(systemName: showPassword ? "eye.slash.fill" : "eye.fill")
-                            .foregroundColor(.gray)
+                    NavigationLink(destination: ActualizarContrasenaView(), isActive: $navegarARecuperar) {
+                        Button(action: {
+                            navegarARecuperar = true
+                        }) {
+                            Text("¿Olvidaste tu contraseña?")
+                                .font(.footnote)
+                                .foregroundColor(Color("TextoPrincipal"))
+                                .underline()
+                        }
                     }
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 10)
-                .background(RoundedRectangle(cornerRadius: 12).fill(Color("FondoTarjeta")))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .strokeBorder((passwordEmpty || passwordInvalid) ? Color.red : Color.clear, lineWidth: 1.5)
-                )
-                .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 2)
-                .padding(.horizontal, 30)
 
-                // Error message
-                if !errorMessage.isEmpty {
-                    Text(errorMessage)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .padding(.top, -10)
-                }
+                    Button {
+                        login()
+                    } label: {
+                        if isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: Color("TextoPrincipal")))
+                                .frame(maxWidth: 200)
+                                .padding()
+                        } else {
+                            Text("LOGIN")
+                                .font(.headline)
+                                .foregroundColor(Color("TextoPrincipal"))
+                                .frame(maxWidth: 200)
+                                .padding()
+                                .background(Color("BotonPrimario"))
+                                .cornerRadius(8)
+                        }
+                    }
 
-                Text("¿Olvidaste tu contraseña?")
+                    Button("¿No tienes cuenta? Regístrate") {
+                        onRegisterTap()
+                    }
                     .font(.footnote)
                     .foregroundColor(Color("TextoPrincipal"))
+                    .underline()
+                    .padding(.top, 10)
 
-                Button {
-                    login()
-                } label: {
-                    if isLoading {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: Color("TextoPrincipal")))
-                            .frame(maxWidth: 200)
-                            .padding()
-                    } else {
-                        Text("LOGIN")
-                            .font(.headline)
-                            .foregroundColor(Color("TextoPrincipal"))
-                            .frame(maxWidth: 200)
-                            .padding()
-                            .background(Color("BotonPrimario"))
-                            .cornerRadius(8)
-                    }
+                    Spacer()
                 }
-
-                Button("¿No tienes cuenta? Regístrate") {
-                    onRegisterTap()
-                }
-                .font(.footnote)
-                .foregroundColor(Color("TextoPrincipal"))
-                .underline()
-                .padding(.top, 10)
-
-                Spacer()
             }
         }
     }
