@@ -13,6 +13,11 @@ struct LoginErrorResponse: Decodable {
     let reason: String
 }
 
+struct LoginSuccessResponse: Decodable {
+    let status: String
+    let id: String
+}
+
 class AuthService {
     static let shared = AuthService()
 
@@ -40,9 +45,10 @@ class AuthService {
                 return
             }
 
-            // Caso éxito: backend responde con {"status": "ok"}
-            if let json = try? JSONDecoder().decode([String: String].self, from: data),
-               json["status"] == "ok" {
+            // Caso éxito: backend responde con {"id": "...", "status": "ok"}
+            if let json = try? JSONDecoder().decode(LoginSuccessResponse.self, from: data),
+               json.status == "ok" {
+                UserDefaults.standard.set(json.id, forKey: "loggedUserId")
                 completion(true, nil)
 
             // Caso error: backend responde con {"error": true, "reason": "..."}
@@ -56,4 +62,5 @@ class AuthService {
             }
         }.resume()
     }
+
 }

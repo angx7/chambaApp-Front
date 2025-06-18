@@ -10,9 +10,9 @@ struct ServiciosView: View {
     var onLogout: () -> Void  // Callback para cerrar sesión
 
     @AppStorage("isLoggedIn") private var isLoggedIn: Bool = false
-    @AppStorage("loggedUsername") private var loggedUsername: String = ""
-
+    @AppStorage("loggedUserId") private var loggedUserId: String = ""
     @State private var showLogoutAlert = false
+    @State private var navegarAConfiguracion = false
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -62,23 +62,43 @@ struct ServiciosView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
 
-            // Botón de logout con alerta
-            Button("Logout") {
-                showLogoutAlert = true
+            Menu {
+                Button("Configuración") {
+                    navegarAConfiguracion = true
+                }
+
+                Button("Cerrar sesión", role: .destructive) {
+                    showLogoutAlert = true
+                }
+            } label: {
+                Image(systemName: "gearshape")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 26, height: 26)
+                    .padding(.top, 16)
+                    .padding(.trailing, 20)
+                    .foregroundColor(Color("TextoPrincipal"))
             }
-            .font(.footnote)
-            .padding(.top, 16)
-            .padding(.trailing, 20)
-            .foregroundColor(Color("TextoPrincipal"))
+
             .alert("¿Seguro que deseas cerrar sesión?", isPresented: $showLogoutAlert) {
                 Button("Cancelar", role: .cancel) { }
 
                 Button("Cerrar sesión", role: .destructive) {
                     isLoggedIn = false
-                    loggedUsername = ""
+                    loggedUserId = ""
                     onLogout()
                 }
             }
+
+            // NavigationLink invisible para ir a ConfiguracionView
+            NavigationLink(destination: ConfiguracionView(onLogout: {
+                isLoggedIn = false
+                loggedUserId = ""
+                onLogout()
+            }), isActive: $navegarAConfiguracion) {
+                EmptyView()
+            }
+
         }
     }
 }
