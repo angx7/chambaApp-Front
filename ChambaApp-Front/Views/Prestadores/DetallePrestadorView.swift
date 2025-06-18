@@ -74,7 +74,7 @@ struct DetallePrestadorView: View {
                                 .font(.headline)
                                 .foregroundColor(Color("TextoPrincipal"))
 
-                            Text("Hola, soy \(prestador.nombre). Tengo \(prestador.experiencia?.lowercased() ?? "0 años") de experiencia en el área \"\(prestador.subservicio?.lowercased() ?? "")\". Me encanta ayudar a las personas y brindar un servicio de calidad.")
+                            Text("Hola, soy \(prestador.nombre). Tengo \(prestador.experiencia.lowercased() ?? "0 años") de experiencia en el área \"\(prestador.subservicio.lowercased() ?? "")\". Me encanta ayudar a las personas y brindar un servicio de calidad.")
                                 .font(.body)
                                 .foregroundColor(Color("TextoPrincipal"))
                                 .multilineTextAlignment(.leading)
@@ -82,7 +82,7 @@ struct DetallePrestadorView: View {
                         .padding(.horizontal)
 
                         // Reseñas
-                        if !(prestador.reseñas?.isEmpty ?? false) {
+                        if !(prestador.reseñas.isEmpty ?? false) {
                             VStack(alignment: .leading, spacing: 12) {
                                 Text("Reseñas")
                                     .font(.headline)

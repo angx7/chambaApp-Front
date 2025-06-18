@@ -26,7 +26,7 @@ struct ServiciosView: View {
                         .foregroundColor(Color("TextoPrincipal"))
                         .padding(.top, 60)
 
-                    NavigationLink(destination: SubservicioListView(titulo: "Doméstico")) {
+                    NavigationLink(destination: SubservicioListView(titulo: "Domestico")) {
                         ServicioItem(
                             icon: "house.fill",
                             title: "Doméstico",

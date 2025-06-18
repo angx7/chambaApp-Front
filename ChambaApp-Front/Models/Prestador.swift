@@ -15,24 +15,54 @@ import Foundation
 //    let imagenURL: URL
 //}
 
-struct Prestador: Identifiable {
-    var id: UUID
-    var nombre: String
-    var edad: Int
-    var telefono: String?
-    var subservicio: String?
-    var imagenURL: String
-    var descripcion: String
-    var experiencia: String?
-    var ubicacion: String?
-    var calificacion: Double?
-    var reseñas: [Reseña]?
+import Foundation
+
+struct Prestador: Identifiable, Codable {
+    let id: String
+    let nombre: String
+    let edad: Int
+    let telefono: String
+    let subservicio: String
+    let imagenURL: String
+    let descripcion: String
+    let experiencia: String
+    let ubicacion: String
+    let calificacion: Double
+    let reseñas: [Reseña]
+
+    enum CodingKeys: String, CodingKey {
+        case id = "_id"
+        case nombre, edad, telefono, subservicio
+        case imagenURL = "fotoURL"
+        case descripcion, experiencia, ubicacion, calificacion, reseñas
+    }
+
+    enum ObjectIdKeys: String, CodingKey {
+        case oid = "$oid"
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let objectIdContainer = try container.nestedContainer(keyedBy: ObjectIdKeys.self, forKey: .id)
+        self.id = try objectIdContainer.decode(String.self, forKey: .oid)
+
+        self.nombre = try container.decode(String.self, forKey: .nombre)
+        self.edad = try container.decode(Int.self, forKey: .edad)
+        self.telefono = try container.decode(String.self, forKey: .telefono)
+        self.subservicio = try container.decode(String.self, forKey: .subservicio)
+        self.imagenURL = try container.decode(String.self, forKey: .imagenURL)
+        self.descripcion = try container.decode(String.self, forKey: .descripcion)
+        self.experiencia = try container.decode(String.self, forKey: .experiencia)
+        self.ubicacion = try container.decode(String.self, forKey: .ubicacion)
+        self.calificacion = try container.decode(Double.self, forKey: .calificacion)
+        self.reseñas = try container.decode([Reseña].self, forKey: .reseñas)
+    }
 }
 
-struct Reseña: Identifiable {
-    var id = UUID()
-    var cliente: String
-    var comentario: String
-    var calificacion: Int
-    var fecha: String
+struct Reseña: Codable, Identifiable {
+    let id = UUID() // Genera un ID único
+    let cliente: String
+    let comentario: String
+    let calificacion: Int
+    let fecha: String
 }

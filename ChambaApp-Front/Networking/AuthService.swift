@@ -17,7 +17,7 @@ class AuthService {
     static let shared = AuthService()
 
     func login(username: String, password: String, completion: @escaping (Bool, String?) -> Void) {
-        guard let url = URL(string: "https://7a65-2a09-bac5-4a13-63c-00-9f-2b.ngrok-free.app/login") else {
+        guard let url = URL(string: "\(Constants.baseURL)/login") else {
             completion(false, "URL inválida")
             return
         }

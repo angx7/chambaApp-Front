@@ -44,114 +44,14 @@ struct PrestadoresListView: View {
     }
 
     func cargarPrestadores() {
-        switch titulo {
-        case "Cuidado de niños":
-            prestadores = [
-                Prestador(
-                    id: UUID(),
-                    nombre: "Laura González",
-                    edad: 27,
-                    telefono: "555-123-4567",
-                    subservicio: "Cuidado de niños",
-                    imagenURL: "https://cdn-icons-png.flaticon.com/512/236/236832.png",
-                    descripcion: "Especialista en cuidado infantil",
-                    experiencia: "5 años",
-                    ubicacion: "CDMX",
-                    calificacion: 4.8,
-                    reseñas: [
-                        Reseña(
-                            cliente: "Marta López",
-                            comentario: "Muy responsable y amable.",
-                            calificacion: 5,
-                            fecha: "2025-06-01"
-                        )
-                    ]
-                ),
-                Prestador(
-                    id: UUID(),
-                    nombre: "Alejandra Ramírez",
-                    edad: 33,
-                    telefono: "555-222-3344",
-                    subservicio: "Cuidado de niños",
-                    imagenURL: "https://cdn-icons-png.flaticon.com/512/6997/6997662.png",
-                    descripcion: "Apoyo con tareas y juegos",
-                    experiencia: "3 años",
-                    ubicacion: "Monterrey",
-                    calificacion: 4.6,
-                    reseñas: []
-                ),
-                Prestador(
-                    id: UUID(),
-                    nombre: "María Téllez",
-                    edad: 38,
-                    telefono: "555-777-8888",
-                    subservicio: "Cuidado de niños",
-                    imagenURL: "https://cdn-icons-png.flaticon.com/512/6997/6997689.png",
-                    descripcion: "Experiencia con niños pequeños",
-                    experiencia: "6 años",
-                    ubicacion: "Guadalajara",
-                    calificacion: 4.9,
-                    reseñas: [
-                        Reseña(
-                            cliente: "Sandra Reyes",
-                            comentario: "Trato excelente con mis hijos.",
-                            calificacion: 5,
-                            fecha: "2025-05-20"
-                        )
-                    ]
-                )
-            ]
-
-        case "Jardinería":
-            prestadores = [
-                Prestador(
-                    id: UUID(),
-                    nombre: "Carlos Rivera",
-                    edad: 45,
-                    telefono: "555-333-2222",
-                    subservicio: "Jardinería",
-                    imagenURL: "https://cdn-icons-png.flaticon.com/512/2922/2922802.png",
-                    descripcion: "Diseño y mantenimiento de jardines",
-                    experiencia: "10 años",
-                    ubicacion: "Querétaro",
-                    calificacion: 4.7,
-                    reseñas: [
-                        Reseña(
-                            cliente: "Luis Martínez",
-                            comentario: "Dejó mi jardín impecable.",
-                            calificacion: 5,
-                            fecha: "2025-06-05"
-                        )
-                    ]
-                )
-            ]
-
-        case "Limpieza":
-            prestadores = [
-                Prestador(
-                    id: UUID(),
-                    nombre: "Ana López",
-                    edad: 29,
-                    telefono: "555-111-0000",
-                    subservicio: "Limpieza",
-                    imagenURL: "https://cdn-icons-png.flaticon.com/512/2922/2922510.png",
-                    descripcion: "Limpieza profunda y rápida",
-                    experiencia: "4 años",
-                    ubicacion: "CDMX",
-                    calificacion: 4.85,
-                    reseñas: [
-                        Reseña(
-                            cliente: "Carmen Duarte",
-                            comentario: "Muy detallista y puntual.",
-                            calificacion: 5,
-                            fecha: "2025-06-10"
-                        )
-                    ]
-                )
-            ]
-
-        default:
-            prestadores = []
+        PrestadorService.shared.obtenerPorSubservicio(nombre: titulo) { resultado, error in
+            if let resultado = resultado {
+                DispatchQueue.main.async {
+                    self.prestadores = resultado
+                }
+            } else {
+                print("Error cargando prestadores:", error?.localizedDescription ?? "Desconocido")
+            }
         }
     }
 
