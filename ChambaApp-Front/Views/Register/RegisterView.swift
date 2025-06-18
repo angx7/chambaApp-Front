@@ -232,19 +232,3 @@ struct RegisterView: View {
         }
     }
 }
-
-struct FormFieldModifier: ViewModifier {
-    var invalid: Bool
-
-    func body(content: Content) -> some View {
-        content
-            .padding()
-            .background(Color("FondoTarjeta"))
-            .foregroundColor(Color("TextoPrincipal"))
-            .cornerRadius(5)
-            .overlay(
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(invalid ? Color.red : Color.clear, lineWidth: 1.5)
-            )
-    }
-}

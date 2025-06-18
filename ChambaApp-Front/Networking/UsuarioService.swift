@@ -42,7 +42,7 @@ class UsuarioService {
     }
 
     func actualizarUsuario(_ usuario: Usuario, completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: "\(Constants.baseURL)/usuarios/\(usuario.id ?? ""))") else {
+        guard let url = URL(string: "\(Constants.baseURL)/usuarios/\(usuario.id)") else {
             completion(false)
             return
         }

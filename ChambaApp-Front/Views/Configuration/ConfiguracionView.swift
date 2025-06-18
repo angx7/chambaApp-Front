@@ -22,6 +22,7 @@ struct ConfiguracionView: View {
     @State private var showUpdateAlert = false
     @State private var showDeleteAlert = false
     @State private var cuentaEliminada = false
+    @State private var showSuccessUpdate = false
 
     var onLogout: () -> Void
 
@@ -94,14 +95,21 @@ struct ConfiguracionView: View {
                 user.cp = cp
 
                 UsuarioService.shared.actualizarUsuario(user) { success in
-                    if success {
-                        print("✅ Usuario actualizado correctamente")
-                        self.usuario = user
-                    } else {
-                        print("❌ Error al actualizar")
+                    DispatchQueue.main.async {
+                        if success {
+                            self.usuario = user
+                            showSuccessUpdate = true
+                        } else {
+                            print("❌ Error al actualizar")
+                        }
                     }
                 }
             }
+        }
+
+        // Alerta tras actualización exitosa
+        .alert("Tus datos fueron actualizados correctamente", isPresented: $showSuccessUpdate) {
+            Button("Aceptar", role: .cancel) {}
         }
 
         // Confirmación de eliminación
@@ -142,26 +150,6 @@ struct ConfiguracionView: View {
                     }
                 }
             }
-        }
-    }
-}
-
-struct ConfigRowEditable: View {
-    var label: String
-    @Binding var value: String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(label)
-                .font(.caption)
-                .foregroundColor(.gray)
-
-            TextField(label, text: $value)
-                .font(.body)
-                .foregroundColor(Color("TextoPrincipal"))
-                .padding(8)
-                .background(Color.white.opacity(0.1))
-                .cornerRadius(8)
         }
     }
 }
