@@ -73,6 +73,17 @@ ChambaApp-Front/
 
 ---
 
+## 🔐 Usuario de prueba
+
+Puedes iniciar sesión con las siguientes credenciales de prueba:
+
+```
+Usuario: JFProfe
+Contraseña: 12356
+```
+
+---
+
 ## 🔒 Seguridad
 
 - Las contraseñas no se guardan en texto plano
