@@ -100,7 +100,12 @@ Este proyecto se conecta a una API REST desarrollada con [Vapor](https://github.
 
 ## 👤 Autores
 
-Desarrollado por [@angx7](https://github.com/angx7), [@Kuripipeer](https://github.com/kuripipeer), [@bardodepacotilla2912](https://github.com/bardodepacotilla2912), [@GreciaNM](https://github.com/GreciaNM)
+Desarrollado por: 
+- Angel Alejandro Becerra Rojas [@angx7](https://github.com/angx7)
+- Christian Axel Moreno Flores [@Kuripipeer](https://github.com/kuripipeer)
+- Abraham Rodríguez Contreras [@bardodepacotilla2912](https://github.com/bardodepacotilla2912)
+- Grecia Navarrete Mexicano [@GreciaNM](https://github.com/GreciaNM)
+- Ximena Gutiérrez Pérez [@Xitony0407](https://github.com/Xitony0407)
 
 ---
 
