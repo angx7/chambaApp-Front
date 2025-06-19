@@ -11,7 +11,7 @@ struct Usuario: Identifiable, Codable {
     var fechaNacimiento: String
     var domicilio: String
     var cp: String
-
+    
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case usuario
@@ -20,16 +20,16 @@ struct Usuario: Identifiable, Codable {
         case domicilio
         case cp
     }
-
+    
     enum ObjectIdKeys: String, CodingKey {
         case oid = "$oid"
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let idContainer = try container.nestedContainer(keyedBy: ObjectIdKeys.self, forKey: .id)
         id = try idContainer.decode(String.self, forKey: .oid)
-
+        
         usuario = try container.decode(String.self, forKey: .usuario)
         nombreCompleto = try container.decode(String.self, forKey: .nombreCompleto)
         fechaNacimiento = try container.decode(String.self, forKey: .fechaNacimiento)

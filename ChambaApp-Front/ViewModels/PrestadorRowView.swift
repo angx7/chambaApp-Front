@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PrestadorRowView: View {
     let prestador: Prestador
-
+    
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             // Imagen del prestador
@@ -34,17 +34,17 @@ struct PrestadorRowView: View {
                     EmptyView()
                 }
             }
-
+            
             // Info del prestador
             VStack(alignment: .leading, spacing: 6) {
                 Text(prestador.nombre)
                     .font(.headline)
                     .foregroundColor(Color("TextoPrincipal"))
-
+                
                 Text("\(prestador.edad) años")
                     .font(.subheadline)
                     .foregroundColor(Color("TextoPrincipal"))
-
+                
                 Text(prestador.descripcion)
                     .font(.subheadline)
                     .foregroundColor(Color("TextoPrincipal"))

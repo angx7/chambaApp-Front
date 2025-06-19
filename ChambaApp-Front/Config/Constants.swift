@@ -8,5 +8,5 @@
 import Foundation
 
 struct Constants {
-    static let baseURL = "https://5720-207-249-176-149.ngrok-free.app"
+    static let baseURL = "http://137.184.82.172"
 }

@@ -29,23 +29,23 @@ struct Prestador: Identifiable, Codable {
     let ubicacion: String
     let calificacion: Double
     let reseñas: [Reseña]
-
+    
     enum CodingKeys: String, CodingKey {
         case id = "_id"
         case nombre, edad, telefono, subservicio
         case imagenURL = "fotoURL"
         case descripcion, experiencia, ubicacion, calificacion, reseñas
     }
-
+    
     enum ObjectIdKeys: String, CodingKey {
         case oid = "$oid"
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let objectIdContainer = try container.nestedContainer(keyedBy: ObjectIdKeys.self, forKey: .id)
         self.id = try objectIdContainer.decode(String.self, forKey: .oid)
-
+        
         self.nombre = try container.decode(String.self, forKey: .nombre)
         self.edad = try container.decode(Int.self, forKey: .edad)
         self.telefono = try container.decode(String.self, forKey: .telefono)

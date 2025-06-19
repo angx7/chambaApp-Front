@@ -9,7 +9,7 @@ import SwiftUI
 struct RegisterView: View {
     var onRegisterSuccess: () -> Void
     var onBackToLogin: () -> Void
-
+    
     @State private var nombreCompleto = ""
     @State private var domicilio = ""
     @State private var fechaNacimiento = ""
@@ -18,17 +18,17 @@ struct RegisterView: View {
     @State private var contrasena = ""
     @State private var confirmarContrasena = ""
     @State private var mostrarContrasena = false
-
+    
     @State private var showImagePicker = false
     @State private var imageSource: UIImagePickerController.SourceType = .photoLibrary
     @State private var selectedUIImage: UIImage? = nil
-
+    
     @State private var errorMessage = ""
     @State private var fieldErrors = [String: Bool]()
-
+    
     @State private var isLoading = false
     @State private var showWelcomeAlert = false
-
+    
     func validarCampos() -> Bool {
         fieldErrors = [
             "nombreCompleto": nombreCompleto.trimmingCharacters(in: .whitespaces).isEmpty,
@@ -39,7 +39,7 @@ struct RegisterView: View {
             "contrasena": contrasena.trimmingCharacters(in: .whitespaces).isEmpty,
             "confirmarContrasena": confirmarContrasena != contrasena
         ]
-
+        
         if fieldErrors.values.contains(true) {
             if fieldErrors["cp"] == true {
                 errorMessage = "El código postal debe tener 5 dígitos."
@@ -50,14 +50,14 @@ struct RegisterView: View {
             }
             return false
         }
-
+        
         errorMessage = ""
         return true
     }
-
+    
     func registrarUsuario() {
         isLoading = true
-
+        
         let nuevoUsuario: [String: String] = [
             "nombreCompleto": nombreCompleto,
             "fechaNacimiento": fechaNacimiento,
@@ -66,11 +66,11 @@ struct RegisterView: View {
             "usuario": usuario,
             "contrasena": contrasena
         ]
-
+        
         AuthService.shared.register(usuario: nuevoUsuario) { success, mensaje in
             DispatchQueue.main.async {
                 isLoading = false
-
+                
                 if success {
                     showWelcomeAlert = true
                 } else {
@@ -79,70 +79,38 @@ struct RegisterView: View {
             }
         }
     }
-
+    
     var body: some View {
         ZStack {
             Color("FondoPrincipal").ignoresSafeArea()
-
+            
             ScrollView {
                 VStack(spacing: 24) {
                     Text("REGISTRO")
                         .font(.largeTitle)
                         .foregroundColor(Color("TextoPrincipal"))
                         .padding(.top, 40)
-
-                    ZStack {
-                        Rectangle()
-                            .fill(Color("FondoTarjeta"))
-                            .frame(height: 140)
-                            .cornerRadius(8)
-
-                        if let uiImage = selectedUIImage {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 140)
-                                .cornerRadius(8)
-                        } else {
-                            Text("INE")
-                                .foregroundColor(Color("TextoPrincipal"))
-                                .font(.title2)
-                        }
-                    }
-                    .padding(.horizontal, 30)
-
-                    HStack(spacing: 20) {
-                        Button("Galería") {
-                            imageSource = .photoLibrary
-                            showImagePicker = true
-                        }
-                        Button("Cámara") {
-                            imageSource = .camera
-                            showImagePicker = true
-                        }
-                    }
-                    .foregroundColor(Color("TextoPrincipal"))
-
+                    
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Registro manual")
                             .foregroundColor(Color("TextoPrincipal"))
-
+                        
                         TextField("Nombre completo", text: $nombreCompleto)
                             .modifier(FormFieldModifier(invalid: fieldErrors["nombreCompleto"] ?? false))
-
+                        
                         TextField("Domicilio", text: $domicilio)
                             .modifier(FormFieldModifier(invalid: fieldErrors["domicilio"] ?? false))
-
+                        
                         TextField("Fecha de nacimiento", text: $fechaNacimiento)
                             .modifier(FormFieldModifier(invalid: fieldErrors["fechaNacimiento"] ?? false))
-
+                        
                         TextField("Código Postal", text: $cp)
                             .keyboardType(.numberPad)
                             .modifier(FormFieldModifier(invalid: fieldErrors["cp"] ?? false))
-
+                        
                         TextField("Usuario", text: $usuario)
                             .modifier(FormFieldModifier(invalid: fieldErrors["usuario"] ?? false))
-
+                        
                         HStack {
                             Group {
                                 if mostrarContrasena {
@@ -152,7 +120,7 @@ struct RegisterView: View {
                                 }
                             }
                             .id("contrasena-\(mostrarContrasena)") // 🔑 clave
-
+                            
                             Button(action: {
                                 mostrarContrasena.toggle()
                             }) {
@@ -161,7 +129,7 @@ struct RegisterView: View {
                             }
                         }
                         .modifier(FormFieldModifier(invalid: fieldErrors["contrasena"] ?? false))
-
+                        
                         HStack {
                             Group {
                                 if mostrarContrasena {
@@ -171,7 +139,7 @@ struct RegisterView: View {
                                 }
                             }
                             .id("confirmar-\(mostrarContrasena)") // 🔑 clave también
-
+                            
                             Button(action: {
                                 mostrarContrasena.toggle()
                             }) {
@@ -180,16 +148,16 @@ struct RegisterView: View {
                             }
                         }
                         .modifier(FormFieldModifier(invalid: fieldErrors["confirmarContrasena"] ?? false))
-
+                        
                     }
                     .padding(.horizontal, 30)
-
+                    
                     if !errorMessage.isEmpty {
                         Text(errorMessage)
                             .foregroundColor(.red)
                             .font(.caption)
                     }
-
+                    
                     Button {
                         if validarCampos() {
                             registrarUsuario()
@@ -210,20 +178,17 @@ struct RegisterView: View {
                                 .cornerRadius(8)
                         }
                     }
-
+                    
                     Button("¿Ya tienes cuenta? Inicia sesión") {
                         onBackToLogin()
                     }
                     .foregroundColor(Color("TextoPrincipal"))
                     .font(.footnote)
                     .padding(.top, 10)
-
+                    
                     Spacer()
                 }
             }
-        }
-        .sheet(isPresented: $showImagePicker) {
-            ImagePicker(selectedImage: $selectedUIImage, sourceType: imageSource)
         }
         .alert("Bienvenido", isPresented: $showWelcomeAlert) {
             Button("OK") {

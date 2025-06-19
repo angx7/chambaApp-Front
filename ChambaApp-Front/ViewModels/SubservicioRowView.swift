@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SubservicioRowView: View {
     let subservicio: Subservicio
-
+    
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             AsyncImage(url: URL(string: subservicio.imagenURL)) { phase in
@@ -33,12 +33,12 @@ struct SubservicioRowView: View {
                     EmptyView()
                 }
             }
-
+            
             VStack(alignment: .leading, spacing: 6) {
                 Text(subservicio.nombre)
                     .font(.headline)
                     .foregroundColor(Color("TextoPrincipal"))
-
+                
                 Text(subservicio.descripcion)
                     .font(.subheadline)
                     .foregroundColor(Color("TextoPrincipal"))

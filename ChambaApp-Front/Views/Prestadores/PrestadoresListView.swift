@@ -10,13 +10,13 @@ import SwiftUI
 struct PrestadoresListView: View {
     let titulo: String
     @State private var prestadores: [Prestador] = []
-
+    
     var body: some View {
         ZStack {
             // Fondo adaptable
             Color("FondoPrincipal")
                 .ignoresSafeArea()
-
+            
             ScrollView {
                 VStack(alignment: .leading, spacing: 40) {
                     Text(titulo.uppercased())
@@ -25,14 +25,14 @@ struct PrestadoresListView: View {
                         .foregroundColor(Color("TextoPrincipal"))
                         .padding(.top, 60)
                         .frame(maxWidth: .infinity, alignment: .center)
-
+                    
                     ForEach(prestadores) { p in
                         NavigationLink(destination: DetallePrestadorView(prestador: p)) {
                             PrestadorRowView(prestador: p)
                         }
                     }
-
-
+                    
+                    
                     Spacer(minLength: 50)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -42,7 +42,7 @@ struct PrestadoresListView: View {
             cargarPrestadores()
         }
     }
-
+    
     func cargarPrestadores() {
         PrestadorService.shared.obtenerPorSubservicio(nombre: titulo) { resultado, error in
             if let resultado = resultado {
@@ -54,5 +54,5 @@ struct PrestadoresListView: View {
             }
         }
     }
-
+    
 }

@@ -10,7 +10,7 @@ struct ServicioItem: View {
     var icon: String
     var title: String
     var description: String
-
+    
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
             // Ícono circular
@@ -18,26 +18,26 @@ struct ServicioItem: View {
                 Circle()
                     .stroke(Color("TextoPrincipal"), lineWidth: 2)
                     .frame(width: 70, height: 70)
-
+                
                 Image(systemName: icon)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 35, height: 35)
                     .foregroundColor(Color("TextoPrincipal"))
             }
-
+            
             // Texto alineado a la izquierda
             VStack(alignment: .leading, spacing: 8) {
                 Text(title)
                     .font(.headline)
                     .bold()
                     .foregroundColor(Color("TextoPrincipal"))
-
+                
                 Text(description)
                     .font(.caption)
                     .foregroundColor(Color("TextoPrincipal"))
                     .multilineTextAlignment(.leading)
-                    
+                
                 
             }
             Spacer()

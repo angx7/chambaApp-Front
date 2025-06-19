@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FormFieldModifier: ViewModifier {
     var invalid: Bool
-
+    
     func body(content: Content) -> some View {
         content
             .padding()

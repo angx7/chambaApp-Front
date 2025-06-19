@@ -8,11 +8,11 @@ import SwiftUI
 
 struct DetallePrestadorView: View {
     let prestador: Prestador
-
+    
     var body: some View {
         ZStack {
             Color("FondoPrincipal").ignoresSafeArea()
-
+            
             VStack(spacing: 0) {
                 ScrollView {
                     VStack(spacing: 20) {
@@ -38,23 +38,23 @@ struct DetallePrestadorView: View {
                             }
                         }
                         .padding(.top, 40)
-
+                        
                         // Nombre, edad y descripción
                         Text(prestador.nombre)
                             .font(.title)
                             .bold()
                             .foregroundColor(Color("TextoPrincipal"))
-
+                        
                         Text("\(prestador.edad) años")
                             .font(.subheadline)
                             .foregroundColor(Color("TextoPrincipal"))
-
+                        
                         Text(prestador.descripcion)
                             .font(.body)
                             .foregroundColor(Color("TextoPrincipal"))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal)
-
+                        
                         // Calificación general con estrellas
                         HStack(spacing: 4) {
                             ForEach(0..<5) { i in
@@ -65,29 +65,29 @@ struct DetallePrestadorView: View {
                                 .font(.subheadline)
                                 .foregroundColor(Color("TextoPrincipal"))
                         }
-
+                        
                         Divider().padding(.vertical, 10)
-
+                        
                         // Sobre mí
                         VStack(alignment: .leading, spacing: 8) {
                             Text("Sobre mí")
                                 .font(.headline)
                                 .foregroundColor(Color("TextoPrincipal"))
-
+                            
                             Text("Hola, soy \(prestador.nombre). Tengo \(prestador.experiencia.lowercased() ?? "0 años") de experiencia en el área \"\(prestador.subservicio.lowercased() ?? "")\". Me encanta ayudar a las personas y brindar un servicio de calidad.")
                                 .font(.body)
                                 .foregroundColor(Color("TextoPrincipal"))
                                 .multilineTextAlignment(.leading)
                         }
                         .padding(.horizontal)
-
+                        
                         // Reseñas
                         if !(prestador.reseñas.isEmpty ?? false) {
                             VStack(alignment: .leading, spacing: 12) {
                                 Text("Reseñas")
                                     .font(.headline)
                                     .foregroundColor(Color("TextoPrincipal"))
-
+                                
                                 ForEach(prestador.reseñas ?? []) { reseña in
                                     ReseñaView(reseña: reseña)
                                 }
@@ -97,10 +97,17 @@ struct DetallePrestadorView: View {
                         }
                     }
                 }
-
+                
                 // Botón fijo abajo
                 Button(action: {
-                    // Acción: abrir chat, llamar, etc.
+                    let numeroLimpio = prestador.telefono.replacingOccurrences(of: " ", with: "")
+                    let mensaje = "Hola, estoy interesado en tus servicios"
+                    let mensajeCodificado = mensaje.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+
+                    if let url = URL(string: "https://wa.me/\(numeroLimpio)?text=\(mensajeCodificado)"),
+                       UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url)
+                    }
                 }) {
                     Text("Contactar a \(prestador.nombre.components(separatedBy: " ").first ?? "prestador")")
                         .font(.headline)
@@ -113,8 +120,9 @@ struct DetallePrestadorView: View {
                 }
                 .padding(.bottom, 20)
                 .background(Color("FondoPrincipal").ignoresSafeArea(edges: .bottom))
+
             }
         }
     }
-
+    
 }

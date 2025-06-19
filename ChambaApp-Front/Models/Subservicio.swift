@@ -13,7 +13,7 @@ struct Subservicio: Identifiable, Codable {
     let categoria: String
     let imagenURL: String
     let descripcion: String
-
+    
     private enum CodingKeys: String, CodingKey {
         case id = "_id"
         case nombre
@@ -21,11 +21,11 @@ struct Subservicio: Identifiable, Codable {
         case imagenURL
         case descripcion
     }
-
+    
     private enum ObjectIdKeys: String, CodingKey {
         case oid = "$oid"
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let objectIdContainer = try container.nestedContainer(keyedBy: ObjectIdKeys.self, forKey: .id)
@@ -35,7 +35,7 @@ struct Subservicio: Identifiable, Codable {
         self.imagenURL = try container.decode(String.self, forKey: .imagenURL)
         self.descripcion = try container.decode(String.self, forKey: .descripcion)
     }
-
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         var objectIdContainer = container.nestedContainer(keyedBy: ObjectIdKeys.self, forKey: .id)

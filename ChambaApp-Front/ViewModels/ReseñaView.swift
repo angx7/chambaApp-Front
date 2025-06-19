@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ReseñaView: View {
     let reseña: Reseña
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
@@ -21,7 +21,7 @@ struct ReseñaView: View {
                     .font(.caption)
                     .foregroundColor(.gray)
             }
-
+            
             HStack(spacing: 4) {
                 ForEach(0..<5) { i in
                     Image(systemName: i < reseña.calificacion ? "star.fill" : "star")
@@ -29,7 +29,7 @@ struct ReseñaView: View {
                         .font(.caption)
                 }
             }
-
+            
             Text(reseña.comentario)
                 .font(.body)
                 .foregroundColor(Color("TextoPrincipal"))

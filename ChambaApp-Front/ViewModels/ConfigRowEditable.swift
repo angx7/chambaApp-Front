@@ -9,13 +9,13 @@ import SwiftUI
 struct ConfigRowEditable: View {
     var label: String
     @Binding var value: String
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
                 .font(.caption)
                 .foregroundColor(.gray)
-
+            
             TextField(label, text: $value)
                 .font(.body)
                 .foregroundColor(Color("TextoPrincipal"))
