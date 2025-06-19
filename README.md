@@ -33,8 +33,7 @@ ChambaApp-Front/
 ├── ChambaApp_FrontApp.swift       # Entry point principal
 ├── ContentView.swift              # Componente raíz de navegación
 ├── ImagePicker.swift              # Utilidad para subir imagen
-├── Info.plist                     # Configuración del proyecto
-└── estructura.txt                 # Archivo auxiliar
+└── Info.plist                     # Configuración del proyecto
 ```
 
 ---
